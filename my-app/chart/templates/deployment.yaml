@@ -1,11 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: httpbin-deploy
-  labels:
-    app: httpbin
+  name: {{ .Release.Name }}-httpbin
 spec:
-  replicas: 3
+  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
       app: httpbin
@@ -16,6 +14,7 @@ spec:
     spec:
       containers:
       - name: httpbin
-        image: image: kong/httpbin:0.1.0
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
         ports:
         - containerPort: 80
